@@ -9,6 +9,7 @@ import spray.json._
 
 import scala.concurrent.Await
 import scala.concurrent.duration.Duration
+import scala.io.Source
 import scala.util.{Failure, Success, Try}
 
 /**
@@ -45,13 +46,17 @@ object MailgunnerCli extends SendMessageRequestJsonProtocol{
     args match {
       case Array("-json", json @ _*) =>
         json.mkString("").replaceAll("'", "\"").parseJson.convertTo[SendMessageRequest]
+      case Array("-file", filename) =>
+        Source.fromFile(filename).mkString.parseJson.convertTo[SendMessageRequest]
       case _ =>
         throw new Exception("Missing arguments")
     }
   }
 
   private def usage = {
-    """USAGE: -json { 'to':'email','subject':'message title','body':'message content' }""".stripMargin
+    """USAGE:
+      |    -json { 'to':'email','subject':'message title','body':'message content' }
+      |    -file <path to file containing json payload>""".stripMargin
   }
 
 }
