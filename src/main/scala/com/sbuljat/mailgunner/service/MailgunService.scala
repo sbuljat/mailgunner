@@ -8,14 +8,17 @@ import com.sbuljat.mailgunner.util.ApplicationConfig._
 import scala.concurrent.Future
 
 /**
-  * Created by stipe on 20.1.2016..
+  * Created by stipe on 20.1.2016.
   */
+
+// API for interacting with Mailgun
 trait MailgunApi {
 
   def send(payload:SendMessageRequest):Future[SendMessageResponse]
 
 }
 
+// Mailgun API implementation based on spray-client
 class MailgunService(actorService:ActorService = new ActorService) extends MailgunApi{
   implicit val sys = actorService.system
 
@@ -24,6 +27,7 @@ class MailgunService(actorService:ActorService = new ActorService) extends Mailg
 
   private val pipeline: HttpRequest => Future[HttpResponse] = ( addCredentials(BasicHttpCredentials("api", Mailgun.apiKey)) ~> sendReceive )
 
+  // async email sender
   def send(request:SendMessageRequest):Future[SendMessageResponse] = {
 
     val payload = FormData(Seq("from" -> Mailgun.from, "to" -> request.to, "subject" -> request.subject, "html" -> request.body))
@@ -34,6 +38,7 @@ class MailgunService(actorService:ActorService = new ActorService) extends Mailg
     }
   }
 
+  // shutdowns ActorSystem used by the spray pipeline
   def shutdown = {
     actorService.shutdown()
   }

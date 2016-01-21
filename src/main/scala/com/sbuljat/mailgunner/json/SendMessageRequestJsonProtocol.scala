@@ -5,7 +5,10 @@ import spray.httpx.SprayJsonSupport
 import spray.json._
 
 /**
-  * Created by stipe on 21.1.2016..
+  * Created by stipe on 21.1.2016.
+  *
+  * JSON protocol, used mainly for parsing JSON from a String input.
+  *
   */
 trait SendMessageRequestJsonProtocol extends DefaultJsonProtocol with SprayJsonSupport{
 

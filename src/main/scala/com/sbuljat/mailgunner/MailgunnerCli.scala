@@ -13,7 +13,14 @@ import scala.io.Source
 import scala.util.{Failure, Success, Try}
 
 /**
-  * Created by stipe on 21.1.2016..
+  * Created by stipe on 21.1.2016.
+  *
+  * Command-line interface for sending single email via Mailgun.
+  * You can send email by directly giving json payload or giving path to a file which contains json payload.
+  *
+  * run -json ...
+  * run -file ...
+  *
   */
 object MailgunnerCli extends SendMessageRequestJsonProtocol{
 
