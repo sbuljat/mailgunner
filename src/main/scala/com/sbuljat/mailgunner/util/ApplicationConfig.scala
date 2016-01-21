@@ -1,6 +1,7 @@
 package com.sbuljat.mailgunner.util
 
 import com.typesafe.config.ConfigFactory
+import scala.concurrent.duration._
 
 import scala.util.Try
 
@@ -11,6 +12,10 @@ import scala.util.Try
   */
 object ApplicationConfig {
   private val config = ConfigFactory.load.getConfig("application")
+
+  val timeout = config.getInt("timeout.seconds").seconds
+  val httpInterface = config.getString("http.interface")
+  val httpPort = config.getInt("http.port")
 
   object Mailgun{
     val apiKey = config.getString("mailgun.api-key")

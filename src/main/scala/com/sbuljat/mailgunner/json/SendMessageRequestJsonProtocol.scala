@@ -19,7 +19,7 @@ trait SendMessageRequestJsonProtocol extends DefaultJsonProtocol with SprayJsonS
     }
   }
 
-  implicit object SendMessageJsonFormat extends RootJsonFormat[SendMessageRequest] {
+  implicit object SendMessageRequestJsonFormat extends RootJsonFormat[SendMessageRequest] {
 
     def write(req:SendMessageRequest) = JsObject(
       "to" -> JsString(req.to),
