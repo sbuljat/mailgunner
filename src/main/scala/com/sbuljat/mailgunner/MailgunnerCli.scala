@@ -62,7 +62,7 @@ object MailgunnerCli extends SendMessageRequestJsonProtocol{
 
   private def usage = {
     """USAGE:
-      |    -json { 'to':'email','subject':'message title','body':'message content' }
+      |    -json { 'to':'email','subject':'message title','body':'message content', 'template':'welcome|password-reset', 'vars': { ... } }
       |    -file <path to file containing json payload>""".stripMargin
   }
 

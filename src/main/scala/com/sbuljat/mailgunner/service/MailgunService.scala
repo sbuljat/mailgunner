@@ -2,6 +2,7 @@ package com.sbuljat.mailgunner.service
 
 import akka.event.Logging
 import com.sbuljat.mailgunner.model.{SendMessageResponse, SendMessageRequest}
+import com.sbuljat.mailgunner.util.ApplicationConfig
 import spray.http._
 import spray.client.pipelining._
 import com.sbuljat.mailgunner.util.ApplicationConfig._
@@ -30,7 +31,14 @@ class MailgunService(actorService:ActorService = new ActorService) extends Mailg
   // async email sender
   def send(request:SendMessageRequest):Future[SendMessageResponse] = {
 
-    val payload = FormData(Seq("from" -> Mailgun.from, "to" -> request.to, "subject" -> request.subject, "html" -> request.body))
+    val body = request.template match {
+      case Some(template) =>
+        ApplicationConfig.Template.template(template, request.vars)
+      case _ =>
+        request.body
+    }
+
+    val payload = FormData(Seq("from" -> Mailgun.from, "to" -> request.to, "subject" -> request.subject, "html" -> body))
 
     pipeline(Post(Mailgun.endpoint, payload)).map{response =>
       //log.info(s"Message send status to ${request.to} => ${response.status.toString()} ${response.entity.asString}")

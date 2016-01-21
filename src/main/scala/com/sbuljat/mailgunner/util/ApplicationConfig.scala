@@ -16,4 +16,13 @@ object ApplicationConfig {
     val from = config.getString("mailgun.from")
   }
 
+  object Template{
+
+    def template(templateName:String, params:Map[String,String]):String = {
+      val content = config.getConfig("template").getString(templateName)
+      params.foldLeft(content){ case (agg,next) => agg.replaceAll( s"\\{${next._1}\\}", next._2) }
+    }
+
+  }
+
 }

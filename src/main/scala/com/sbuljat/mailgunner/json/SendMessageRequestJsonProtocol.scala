@@ -12,20 +12,36 @@ import spray.json._
   */
 trait SendMessageRequestJsonProtocol extends DefaultJsonProtocol with SprayJsonSupport{
 
+  def getOptionStringField(name:String, obj:JsObject): Option[String] = {
+    obj.getFields(name) match {
+      case Seq(JsString(x)) => Some(x)
+      case _ => None
+    }
+  }
+
   implicit object SendMessageJsonFormat extends RootJsonFormat[SendMessageRequest] {
 
     def write(req:SendMessageRequest) = JsObject(
       "to" -> JsString(req.to),
       "subject" -> JsString(req.subject),
-      "body" -> JsString(req.body)
+      "body" -> JsString(req.body),
+      "template" -> req.template.map(e => JsString(e)).getOrElse(JsNull)
     )
 
     def read(value:JsValue):SendMessageRequest = {
         value.asJsObject.getFields("to", "subject", "body") match {
           case Seq(JsString(to), JsString(subject), JsString(body)) =>
-            SendMessageRequest(to, subject, body)
+
+            val vars:Map[String,String] = value.asJsObject.getFields("vars") match {
+              case Seq(vars) =>
+                vars.asJsObject.fields.collect{ case (name:String,value:JsString) => name -> value}.map(e => e._1 -> e._2.value)
+              case _ =>
+                Map.empty
+            }
+
+            SendMessageRequest(to, subject, body, getOptionStringField("template", value.asJsObject), vars)
           case _ =>
-            throw new DeserializationException("Bad JSON! Expected { to:String, subject:String, body:String }")
+            throw new DeserializationException("Bad JSON! Expected { to:String, subject:String, body:String, template:String? }")
         }
     }
 
