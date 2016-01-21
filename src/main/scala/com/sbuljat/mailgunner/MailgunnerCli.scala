@@ -29,6 +29,7 @@ object MailgunnerCli extends SendMessageRequestJsonProtocol{
           case SendMessageResponse(false, msg) =>
             println(s"ERROR: $msg")
         }
+
         service.shutdown
 
       case Failure(ex) =>
@@ -39,17 +40,18 @@ object MailgunnerCli extends SendMessageRequestJsonProtocol{
 
   }
 
+  // parse out SendMessageRequest from input arguments
   private def getSendInstruction(args:Array[String]):Try[SendMessageRequest] = Try{
     args match {
-      case Array("-json", json) =>
-        json.parseJson.convertTo[SendMessageRequest]
+      case Array("-json", json @ _*) =>
+        json.mkString("").replaceAll("'", "\"").parseJson.convertTo[SendMessageRequest]
       case _ =>
         throw new Exception("Missing arguments")
     }
   }
 
   private def usage = {
-    """USAGE: -json { "to":"email","subject":"message title","body":"message content" }""".stripMargin
+    """USAGE: -json { 'to':'email','subject':'message title','body':'message content' }""".stripMargin
   }
 
 }
