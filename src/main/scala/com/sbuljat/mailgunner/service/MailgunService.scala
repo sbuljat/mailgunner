@@ -31,9 +31,10 @@ class MailgunService(actorService:ActorService = new ActorService) extends Mailg
   // async email sender
   def send(request:SendMessageRequest):Future[SendMessageResponse] = {
 
-    val body = request.template match {
+    // generate body from template or given body
+    val body = request.template   match {
       case Some(template) =>
-        ApplicationConfig.Template.template(template, request.vars)
+        ApplicationConfig.Template.template(template, request.vars).getOrElse(request.body)
       case _ =>
         request.body
     }

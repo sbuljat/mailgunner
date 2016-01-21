@@ -2,6 +2,8 @@ package com.sbuljat.mailgunner.util
 
 import com.typesafe.config.ConfigFactory
 
+import scala.util.Try
+
 /**
   * Created by stipe on 20.1.2016.
   *
@@ -18,7 +20,8 @@ object ApplicationConfig {
 
   object Template{
 
-    def template(templateName:String, params:Map[String,String]):String = {
+    // try to locate template in application configuration, if found replace all placeholders {name} with given vars, if any.
+    def template(templateName:String, params:Map[String,String]):Try[String] = Try{
       val content = config.getConfig("template").getString(templateName)
       params.foldLeft(content){ case (agg,next) => agg.replaceAll( s"\\{${next._1}\\}", next._2) }
     }
