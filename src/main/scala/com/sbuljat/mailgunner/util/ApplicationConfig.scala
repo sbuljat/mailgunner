@@ -16,6 +16,7 @@ object ApplicationConfig {
   val timeout = config.getInt("timeout.seconds").seconds
   val httpInterface = config.getString("http.interface")
   val httpPort = config.getInt("http.port")
+  val apiTokens = config.getStringList("api.tokens")
 
   object Mailgun{
     val apiKey = config.getString("mailgun.api-key")
