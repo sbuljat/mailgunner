@@ -24,8 +24,18 @@ Mailgun integration
     
 ### REST interface
 
-- **[application/json] POST  /send**
-  Regular send. Doesn't keep track of requests in the case of failure.
+#### [application/json] POST  /send
+Authentication: HEADER X-API-Token (see application.conf for valid tokens)
 
-- **[application/json] POST  /qsend**
-  Persisted queue send
+Regular send. Doesn't keep track of requests in the case of failure.
+Works async, returns response as soon it gets available from Mailgun.
+
+#### [application/json] POST  /qsend
+Authentication: HEADER X-API-Token  (see application.conf for valid tokens)
+
+Persistent queue send. All requests get persisted to a file store prior to Mailgun send.
+This makes system fault-tolerant and on restart replays all unprocessed events.
+When a request is persisted user gets information that his request has been queued under given ID.
+
+App would be complete if user can query status of his request by ID.
+Another approach is to enable inputting callback url which gets called on successful request.
