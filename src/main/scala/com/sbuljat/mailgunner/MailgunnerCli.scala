@@ -32,9 +32,9 @@ object MailgunnerCli extends SendMessageRequestJsonProtocol{
 
         val service = new MailgunService()
         Await.result(service.send(payload), atMost = Duration(10, TimeUnit.SECONDS)) match {
-          case SendMessageResponse(true, _) =>
+          case SendMessageResponse(true, _, _) =>
             println(s"SUCCESS: Message sent to ${payload.to}")
-          case SendMessageResponse(false, msg) =>
+          case SendMessageResponse(false, msg, _) =>
             println(s"ERROR: $msg")
         }
 

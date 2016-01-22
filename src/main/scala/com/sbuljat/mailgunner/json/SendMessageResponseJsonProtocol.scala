@@ -18,7 +18,7 @@ trait SendMessageResponseJsonProtocol {
     def read(value:JsValue):SendMessageResponse = {
       value.asJsObject.getFields("success", "message") match {
         case Seq(JsBoolean(success), JsString(msg)) =>
-          SendMessageResponse(success, msg)
+          SendMessageResponse(success, msg, null)
         case _ =>
           throw new DeserializationException("Bad JSON! Expected { success:Boolean, msg:String }")
       }

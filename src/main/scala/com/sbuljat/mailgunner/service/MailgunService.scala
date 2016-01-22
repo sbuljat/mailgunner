@@ -7,6 +7,7 @@ import spray.http._
 import spray.client.pipelining._
 import com.sbuljat.mailgunner.util.ApplicationConfig._
 import scala.concurrent.Future
+import scala.util.Random
 
 /**
   * Created by stipe on 20.1.2016.
@@ -43,7 +44,8 @@ class MailgunService(actorService:ActorService = new ActorService) extends Mailg
 
     pipeline(Post(Mailgun.endpoint, payload)).map{response =>
       //log.info(s"Message send status to ${request.to} => ${response.status.toString()} ${response.entity.asString}")
-      SendMessageResponse(response.status.isSuccess, response.entity.asString)
+
+      SendMessageResponse(response.status.isSuccess, response.entity.asString, request)
     }
   }
 
