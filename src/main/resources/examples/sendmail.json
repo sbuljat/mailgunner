@@ -1,7 +1,7 @@
 {
-	"to":"sbuljat@gmail.com",
+	"to":"john.doe@me.com",
 	"subject":"Welcome",
-	"body":"<html><body><h1>ALOOOOO</h1></body></html>",
+	"body":"<html><body><h1>Hello World!</h1></body></html>",
 	"template":"welcome",
 	"vars":{
 		"name":"Stjepan",

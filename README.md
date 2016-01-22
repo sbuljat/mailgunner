@@ -19,7 +19,7 @@ Mailgun integration
     
 ### Command-line interface
     
-    $ run -file [/path/payload.json]
+    $ run -file [/path/payload.json] _(see /src/main/resources/examples/sendmail.json)_
     $ run -json {'to':'john@me.com', 'subject':'TEST', 'body':'<html>blabla</html>' }
     
 ### REST interface
