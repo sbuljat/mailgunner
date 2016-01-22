@@ -25,13 +25,13 @@ Mailgun integration
 ### REST interface
 
 #### [application/json] POST  /send
-Authentication: HEADER X-API-Token (see application.conf for valid tokens)
+Authentication: _HEADER_ **X-API-Token** _(see application.conf for valid tokens)_
 
 Regular send. Doesn't keep track of requests in the case of failure.
 Works async, returns response as soon it gets available from Mailgun.
 
 #### [application/json] POST  /qsend
-Authentication: HEADER X-API-Token  (see application.conf for valid tokens)
+Authentication: _HEADER_ **X-API-Token**  _(see application.conf for valid tokens)_
 
 Persistent queue send. All requests get persisted to a file store prior to Mailgun send.
 This makes system fault-tolerant and on restart replays all unprocessed events.
