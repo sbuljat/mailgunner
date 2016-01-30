@@ -20,7 +20,7 @@ trait RestService extends HttpService with SendMessageRequestJsonProtocol with S
 
   val queueActor:ActorRef
 
-  val mailgun:MailgunService
+  val mailgun:MailgunApi
 
   // REST routes (create, delete)
   val route =

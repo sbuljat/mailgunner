@@ -33,7 +33,7 @@ class MailgunService(actorService:ActorService = new ActorService) extends Mailg
   def send(request:SendMessageRequest):Future[SendMessageResponse] = {
 
     // generate body from template or given body
-    val body = request.template   match {
+    val body = request.template  match {
       case Some(template) =>
         ApplicationConfig.Template.template(template, request.vars).getOrElse(request.body)
       case _ =>

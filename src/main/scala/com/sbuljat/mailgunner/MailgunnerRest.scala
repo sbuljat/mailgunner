@@ -11,7 +11,7 @@ import akka.pattern.ask
 /**
   * Created by stipe on 22.1.2016..
   */
-object RestApplication extends App{
+object MailgunnerRest extends App{
 
   // we need an ActorSystem to host our application in
   implicit val system = ActorSystem("dns")
